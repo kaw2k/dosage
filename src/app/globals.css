@@ -1,0 +1,53 @@
+:root {
+}
+
+* {
+  box-sizing: border-box;
+  padding: 0;
+  margin: 0;
+}
+
+html,
+body {
+  font-size: 18px;
+  font-family: sans-serif;
+  max-width: 100vw;
+  overflow-x: hidden;
+}
+
+main {
+  padding: 1em;
+  text-align: center;
+}
+
+label {
+  display: block;
+}
+
+input {
+  display: block;
+  width: 100%;
+  padding: 0.5em;
+  border: 1px solid #ccc;
+  border-radius: 0.5em;
+  font-size: 1em;
+  text-align: center;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+.hstack {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 1em;
+}
+
+.vstack {
+  display: flex;
+  flex-direction: column;
+  gap: 1em;
+}
