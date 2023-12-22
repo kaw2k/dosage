@@ -23,7 +23,7 @@ export default function Home() {
           id="weight"
           placeholder="weight"
           onChange={onChange}
-          value={weight ?? 0}
+          value={weight}
         />
       </div>
 
