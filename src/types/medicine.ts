@@ -11,19 +11,6 @@ export interface Medicine {
   };
 }
 
-const Ibuprofen: Medicine = {
-  name: "Equate Ibuprofen",
-  description: "Pain reliever and fever reducer",
-  suspension: {
-    mg: 100,
-    ml: 5,
-  },
-  dosage: {
-    low: 10,
-    high: 15,
-  },
-};
-
 const Diphenhydramine: Medicine = {
   name: "Diphenhydramine",
   description: "",
@@ -50,11 +37,21 @@ const Acetaminophen: Medicine = {
   },
 };
 
-type LB = number;
-type KG = number;
+const Ibuprofen: Medicine = {
+  name: "Equate Ibuprofen",
+  description: "Pain reliever and fever reducer",
+  suspension: {
+    mg: 100,
+    ml: 5,
+  },
+  dosage: {
+    low: 4,
+    high: 10,
+  },
+};
 
 export function calculateDosage(
-  weight: LB,
+  weight: number,
   dosage: number,
   suspension: Medicine["suspension"]
 ): string {

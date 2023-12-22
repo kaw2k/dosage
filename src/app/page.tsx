@@ -19,11 +19,11 @@ export default function Home() {
           autoCapitalize="off"
           autoCorrect="off"
           autoComplete="off"
-          type="tel"
+          type="number"
           id="weight"
           placeholder="weight"
           onChange={onChange}
-          value={weight}
+          value={weight ?? 0}
         />
       </div>
 
