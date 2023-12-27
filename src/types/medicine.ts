@@ -1,3 +1,5 @@
+"use client";
+
 export interface Medicine {
   name: string;
   description: string;
@@ -9,6 +11,7 @@ export interface Medicine {
     low: number;
     high: number;
   };
+  recommendedDosage?: [low: number, high: number, dosage: number][];
 }
 
 const Diphenhydramine: Medicine = {
@@ -22,6 +25,12 @@ const Diphenhydramine: Medicine = {
     low: 1,
     high: 2,
   },
+  recommendedDosage: [
+    [20, 24, 4],
+    [25, 37, 5],
+    [38, 49, 7.5],
+    [50, 99, 10],
+  ],
 };
 
 const Acetaminophen: Medicine = {
@@ -35,6 +44,12 @@ const Acetaminophen: Medicine = {
     low: 10,
     high: 15,
   },
+  recommendedDosage: [
+    [6, 11, 1.25],
+    [12, 17, 2.5],
+    [18, 23, 3.75],
+    [24, 35, 5],
+  ],
 };
 
 const Ibuprofen: Medicine = {
@@ -48,6 +63,13 @@ const Ibuprofen: Medicine = {
     low: 4,
     high: 10,
   },
+  recommendedDosage: [
+    [24, 35, 5],
+    [36, 47, 7.5],
+    [48, 59, 10],
+    [60, 71, 12.5],
+    [72, 95, 15],
+  ],
 };
 
 export function calculateDosage(
@@ -55,10 +77,11 @@ export function calculateDosage(
   dosage: number,
   suspension: Medicine["suspension"]
 ): string {
-  return (
-    (convertLbToKg(weight) * dosage * suspension.ml) /
-    suspension.mg
-  ).toFixed(2);
+  // Get the base dosage
+  const raw = (convertLbToKg(weight) * dosage * suspension.ml) / suspension.mg;
+  // Round the dosage to the nearest 1/4, 1/3, or 1/2
+  const rounded = Math.round(raw * 4) / 4;
+  return rounded.toFixed(2);
 }
 
 export function convertLbToKg(lb: number): number {
@@ -74,3 +97,14 @@ export const Medicines: Medicine[] = [
   Diphenhydramine,
   Acetaminophen,
 ];
+
+/**
+ * Motrin === Ibprofen === Equate Ibuprofen
+ * Diphenhydramine === Benadryl (antihistamine)
+ * Acetaminophen === Tylenol
+ *
+ * Alongside the low and high, add the brands recommended dosage for their weight
+ * Round numbers to 1/4 or 1/3 or 1/2
+ *
+ * Scan a barcode for medicine and it brings up the inactive ingredients
+ */
