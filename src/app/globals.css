@@ -12,6 +12,10 @@ body {
   overflow-x: hidden;
 }
 
+main {
+  margin-bottom: env(safe-area-inset-bottom);
+}
+
 button,
 a,
 input {
