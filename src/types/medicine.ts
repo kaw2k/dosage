@@ -1,6 +1,14 @@
 "use client";
 
-export interface Medicine {
+export interface Chewable {
+  type: "chewable";
+  name: string;
+  description: string;
+  recommendedDosage?: [low: number, high: number, dosage: number][];
+}
+
+export interface Liquid {
+  type: "liquid";
   name: string;
   description: string;
   suspension: {
@@ -14,7 +22,10 @@ export interface Medicine {
   recommendedDosage?: [low: number, high: number, dosage: number][];
 }
 
+export type Medicine = Liquid | Chewable;
+
 const Diphenhydramine: Medicine = {
+  type: "liquid",
   name: "Diphenhydramine",
   description: "",
   suspension: {
@@ -33,8 +44,35 @@ const Diphenhydramine: Medicine = {
   ],
 };
 
-const Acetaminophen: Medicine = {
-  name: "Acetaminophen",
+const DiphenhydramineChewable: Chewable = {
+  type: "chewable",
+  name: "Children's Diphenhydramine (Chewable)",
+  description: "",
+  recommendedDosage: [
+    [25, 37, 1],
+    [38, 49, 1.5],
+    [50, 99, 2],
+    [100, 200, 4],
+  ],
+};
+
+const AcetaminophenChewable: Chewable = {
+  type: "chewable",
+  name: "Children's Acetaminophen (Chewable)",
+  description: "",
+  recommendedDosage: [
+    [24, 35, 1],
+    [36, 47, 1.5],
+    [48, 59, 2],
+    [60, 71, 2.5],
+    [72, 95, 3],
+    [96, 143, 4],
+  ],
+};
+
+const AcetaminophenLiquid: Liquid = {
+  type: "liquid",
+  name: "Acetaminophen (Liquid)",
   description: "",
   suspension: {
     mg: 160,
@@ -58,6 +96,7 @@ const Acetaminophen: Medicine = {
 };
 
 const Ibuprofen: Medicine = {
+  type: "liquid",
   name: "Equate Ibuprofen",
   description: "Pain reliever and fever reducer",
   suspension: {
@@ -80,7 +119,7 @@ const Ibuprofen: Medicine = {
 export function calculateDosage(
   weight: number,
   dosage: number,
-  suspension: Medicine["suspension"]
+  suspension: Liquid["suspension"]
 ): string {
   // Get the base dosage
   const raw = (convertLbToKg(weight) * dosage * suspension.ml) / suspension.mg;
@@ -100,7 +139,9 @@ export function convertKgToLb(kg: number): number {
 export const Medicines: Medicine[] = [
   Ibuprofen,
   Diphenhydramine,
-  Acetaminophen,
+  AcetaminophenLiquid,
+  AcetaminophenChewable,
+  DiphenhydramineChewable,
 ];
 
 /**

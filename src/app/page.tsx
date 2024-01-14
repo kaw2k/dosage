@@ -3,7 +3,13 @@
 import { Box } from "@/components/Box";
 import { HStack, VStack } from "@/components/Flex";
 import { useLocalStorage } from "@/hooks/useLocalStorage";
-import { Medicine, Medicines, calculateDosage } from "@/types/medicine";
+import {
+  Chewable,
+  Liquid,
+  Medicine,
+  Medicines,
+  calculateDosage,
+} from "@/types/medicine";
 import clsx from "clsx";
 import { useState } from "react";
 
@@ -39,11 +45,22 @@ export default function Home() {
           <VStack gap={8} w="100%">
             {Medicines.map((medicine) => {
               return (
-                <MedicineView
-                  medicine={medicine}
-                  weight={weight}
-                  key={medicine.name}
-                />
+                <>
+                  {medicine.type === "chewable" && (
+                    <ChewableView
+                      medicine={medicine}
+                      weight={weight}
+                      key={medicine.name}
+                    />
+                  )}
+                  {medicine.type === "liquid" && (
+                    <LiquidView
+                      medicine={medicine}
+                      weight={weight}
+                      key={medicine.name}
+                    />
+                  )}
+                </>
               );
             })}
           </VStack>
@@ -68,11 +85,11 @@ export default function Home() {
   );
 }
 
-function MedicineView({
+function LiquidView({
   medicine,
   weight = 0,
 }: {
-  medicine: Medicine;
+  medicine: Liquid;
   weight?: number;
 }) {
   const [open, setOpen] = useState(true);
@@ -143,6 +160,56 @@ function MedicineView({
       </button>
 
       {open ? expanded : constricted}
+    </Box>
+  );
+}
+
+function ChewableView({
+  medicine,
+  weight = 0,
+}: {
+  medicine: Chewable;
+  weight?: number;
+}) {
+  const recommended = medicine.recommendedDosage?.find(
+    ([min, max]) => weight >= min && weight <= max
+  );
+
+  return (
+    <Box border>
+      <h3>{medicine.name}</h3>
+
+      <VStack gap={4}>
+        <p>Pharma Recommended:</p>
+        <VStack gap={2} component="ul">
+          {medicine.recommendedDosage?.map(([low, high, rec]) => (
+            <li
+              key={`${medicine.name}-${rec}`}
+              className={clsx("li", { active: rec === recommended?.[2] })}>
+              <HStack justify="space-between">
+                <span>
+                  {low}lb - {high}lb:
+                </span>{" "}
+                <span>{rec} tablets</span>
+              </HStack>
+            </li>
+          ))}
+        </VStack>
+
+        <style jsx>{`
+          .li {
+            list-style: none;
+            background: transparent;
+            padding: 4px 8px;
+            border-radius: 4px;
+            margin-left: 8px;
+          }
+
+          .active {
+            background: rgba(0, 0, 0, 0.1);
+          }
+        `}</style>
+      </VStack>
     </Box>
   );
 }
